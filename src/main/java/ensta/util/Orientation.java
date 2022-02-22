@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 public enum Orientation {
+	//Peut être à modifier pour que les valeurs associées soient bijectives au nombre de directions
 	SOUTH(1), NORTH(-1), WEST(-1), EAST(1);
 
 	private static final List<Orientation> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
