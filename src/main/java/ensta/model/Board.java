@@ -15,7 +15,7 @@ public class Board implements IBoard {
 	public Board() {
 	}
 
-	private void board_init(){  //On encapsule le board, pour qu sa taille ne soit plus modifiable
+	private void board_init(){  //On encapsule le board, pour que sa taille ne soit plus modifiable
 		for(int i=0; i < this.size; ++i){
 			for(int j = 0; j < this.size; ++j){
 				this.navires[i][j] = '.';
@@ -95,7 +95,7 @@ public class Board implements IBoard {
 					else{ 						//Tracé de la légende des Lignes
 						if(this.size > 9){
 							if(i < 9)
-								System.out.print(" "); 	//Espace pour les boards plus grands que 1
+								System.out.print(" "); 	//Espace pour les boards plus grands que 10
 						}
 						System.out.print(i+1);	 //Numero de la ligne
 						System.out.print(" "); 	//Espace après la première colonne
@@ -106,37 +106,64 @@ public class Board implements IBoard {
 			}
 			System.out.println(); //Saut de ligne, nouvelle ligne
 		}
-
-
-
-
 	}
 
+	//La description de ces fonctions est donnée dans l'interface IBoard.java
 	public boolean putShip(AbstractShip ship, Coords coords){
+		//On récupère d'abord toutes les variables utiles
+		Orientation o = ship.getOrientation();
+
+		//dx correspond au pas par rapport aux colonnes
+		//dy correspond au pas par rapport aux lignes
+		int dx = 0, dy = 0;
+
+
+		//Vérifions que nous pouvons placer le bateau
+		if(this.canPutShip(ship, coords)==false){
+			return false;
+		}
+		//Reprenons le squelette de canPutShip
+		if (o == Orientation.EAST) {
+			dx = 1;
+		} else if (o == Orientation.SOUTH) {
+			dy = 1;
+		} else if (o == Orientation.NORTH) {
+			dy = -1;
+		} else if (o == Orientation.WEST) {
+			dx = -1;
+		}
+		//On modifie le board
+		for (int i = 0; i < ship.getLength(); ++i) {
+			navires[coords.getY() + i*dy][coords.getX() + i*dx] = ship.getLabel();
+		}
 		return true;
 	}
 
 	public boolean hasShip(Coords coords){
-		return true;
+		//On vérifie qu'il n'y a pas déjà un navire sur le board à ces coordonnées
+		if(this.navires[coords.getY()][coords.getX()] != '.')
+			return true;
+		else
+			return false;
 	}	
 
 	public void setHit(boolean hit, Coords coords){
-
+		//On set la frappe aux coordonnées correspondantes
+		frappes[coords.getY()][coords.getX()] = hit;
 	}
 
-	public int getSize(){
+	public int getSize(){ //Encapsulation
 		return size;
 	}
 
 	public Boolean getHit(Coords coords){
-		return true;
+		return frappes[coords.getY()][coords.getX()];
 	} 
 
 	public Hit sendHit(Coords res){
 		Hit missile = Hit.MISS;
 		return missile;
 	}
-
 
 
 	public boolean canPutShip(AbstractShip ship, Coords coords) {
