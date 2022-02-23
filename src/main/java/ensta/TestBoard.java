@@ -24,20 +24,20 @@ public class TestBoard {
         Coords coords2 = new Coords(0,2);
         Coords coords3 = new Coords(0,3);
         Coords coords4 = new Coords(6,8);
-        Coords coordsHit = new Coords(0,0);
+        Coords coordsHit = new Coords(4,0);
+        Coords coordsSunk = new Coords(0,1);
 
         board.putShip(ship1, coords1);
         board.putShip(ship2, coords2);
         board.putShip(ship3, coords3);
         board.putShip(ship4, coords4);
 
-        board.setHit(true, coordsHit);
+        board.sendHit(coords2);
+        board.sendHit(coordsHit);
 
-        
-
-
+        System.out.println(board.sendHit(coordsSunk) + " coulé");
         board.print();
-        System.out.println(board.getHit(coordsHit));        
+        System.out.println(ship2.isSunk());        
 
     }
 

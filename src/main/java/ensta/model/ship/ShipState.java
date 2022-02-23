@@ -9,10 +9,17 @@ public class ShipState {
         this.struck = false;
     }
 
+    public ShipState(AbstractShip ship){
+        this.ship = ship;
+        this.struck = false;
+    }
+
 
     public void addStrike(){
-        if(this.struck == false)
+        if(this.struck == false){
             this.ship.addStrike();
+            this.struck = true;
+        }
     }
 
     public boolean isStruck(){
@@ -23,7 +30,7 @@ public class ShipState {
         if(this.ship == null)
             return ".";
         else
-            return this.ship.getLabel().toString();
+            return this.ship.getLabel().toString(); //Label is a Character
     }
 
     public boolean isSunk(){
