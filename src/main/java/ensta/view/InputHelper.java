@@ -45,13 +45,13 @@ public final class InputHelper {
 					if (Arrays.asList(validOrientations).contains(in[1])) {
 						res.orientation = in[1];
 						res.x = coord.charAt(0) - 'a';
-						res.y = Integer.parseInt(coord.substring(1, coord.length()));
+						res.y = Integer.parseInt(coord.substring(1, coord.length())) - 1;
 						done = true;
 					}
 				}
 			} catch (Exception e) {}
 			if (!done) {
-				System.err.println("Format incorrect! Entrez la position sous forme 'A0 north'");
+				System.err.println("Format incorrect! Entrez la position sous forme 'A1 north'");
 			}
 		} while (!done && scanner.hasNextLine());
 

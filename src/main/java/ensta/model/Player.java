@@ -53,13 +53,13 @@ public class Player {
 			if(res.orientation.equals("north"))
 				ship.setOrientation(Orientation.NORTH);
 			//Récupérons les coordonnées du bateau
-			Coords coords = new Coords(res.y,res.x);
+			Coords coords = new Coords(res.x,res.y);
 
 			// TODO put ship at given position
 			//Cas où, il n'est pas possible de placer un navire à ces coordonnées
 			if(this.board.putShip(ship,coords) == false){
-				System.out.println("You're superposing ships, or your ship is out of bound");
-				System.out.println("Please place correctly your ship");
+				System.out.println("Vous superposez des bateaux, ou votre bateau est hors des limites");
+				System.out.println("Placez correctement votre bateau !");
 				done = (i == 5);
 			}
 			// TODO when ship placement successful
@@ -74,7 +74,7 @@ public class Player {
 	public Hit sendHit(Coords coords) {
 		boolean done = false;
 		Hit hit = null;
-		Coords temp= new Coords(0,0);
+		Coords temp = new Coords(0,0);
 
 		do {
 			System.out.println("où frapper?");

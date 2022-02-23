@@ -135,7 +135,7 @@ public class BattleShipsAI implements Serializable {
 	 */
 
 	private boolean guessOrientation(Coords lastStrike2, Coords res) {
-		return lastStrike2.getX() == res.getY();
+		return lastStrike2.getX() == res.getX();
 	}
 
 	private boolean isUndiscovered(Coords coords) {

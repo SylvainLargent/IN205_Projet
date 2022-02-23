@@ -2,10 +2,12 @@ package ensta.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import ensta.ai.PlayerAI;
 import ensta.model.Board;
 import ensta.model.Coords;
 import ensta.model.Hit;
@@ -39,13 +41,21 @@ public class Game {
 
 	public Game init() {
 		if (!loadSave()) {
-
-
+			
+			List<AbstractShip> ships = new ArrayList<AbstractShip>();
+			ships.add(new Destroyer());
+			ships.add(new BattleShip());
+			ships.add(new Submarine());
+			ships.add(new Carrier());
 			// TODO init boards
-
+			Board board1 = new Board("Joueur Humain");
+			Board board2 = new Board("Joueur AI");
 			// TODO init this.player1 & this.player2
-
+			this.player1 = new Player(board1, board2, ships);
+			this.player2 = new PlayerAI(board2, board1, ships);
 			// TODO place player ships
+			this.player1.putShips();
+			this.player2.putShips();
 		}
 		return this;
 	}
@@ -59,11 +69,15 @@ public class Game {
 		Hit hit;
 
 		// main loop
+		//Affichage Nom du joueur et son board
+		System.out.println(player1.getBoard().getName());
 		b1.print();
 		boolean done;
 		do {
-			hit = Hit.MISS; // TODO player1 send a hit
-			boolean strike = hit != Hit.MISS; // TODO set this hit on his board (b1)
+			hit = player1.sendHit(coords); // TODO player1 send a hit
+
+			boolean strike = (hit != Hit.MISS); // TODO set this hit on his board (b1)
+			b1.setHit(strike, coords);
 
 			done = updateScore();
 			b1.print();
@@ -73,9 +87,10 @@ public class Game {
 
 			if (!done && !strike) {
 				do {
-					hit = Hit.MISS; // TODO player2 send a hit.
+					hit = player2.sendHit(coords); // TODO player2 send a hit.
 
 					strike = hit != Hit.MISS;
+
 					if (strike) {
 						b1.print();
 					}

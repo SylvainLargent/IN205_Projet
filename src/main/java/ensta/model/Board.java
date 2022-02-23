@@ -27,6 +27,7 @@ public class Board implements IBoard {
 	}
 
 	public Board(String name, int size){
+		this.name = name;
 		this.size = size;
 		this.ships = new ShipState[size][size];
 		this.hits = new Boolean[size][size];
@@ -34,6 +35,7 @@ public class Board implements IBoard {
 	}
 
 	public Board(String name){
+		this.name = name;
 		this.size = DEFAULT_SIZE;
 		this.ships = new ShipState[DEFAULT_SIZE][DEFAULT_SIZE];
 		this.hits = new Boolean[DEFAULT_SIZE][DEFAULT_SIZE];
@@ -158,13 +160,16 @@ public class Board implements IBoard {
 	}
 
 	public int getSize(){ //Encapsulation
-		return size;
+		return this.size;
+	}
+
+	public String getName(){
+		return this.name;
 	}
 
 	public Boolean getHit(Coords coords){
 		return this.hits[coords.getY()][coords.getX()];
 	} 
-
 
 	public Hit sendHit(Coords res){
 		if(this.ships[res.getY()][res.getX()].getShip() != null){
@@ -194,22 +199,22 @@ public class Board implements IBoard {
 		Orientation o = ship.getOrientation();
 		int dx = 0, dy = 0;
 		if (o == Orientation.EAST) {
-			if (coords.getX() + ship.getLength() >= this.size) {
+			if (coords.getX() + ship.getLength() > this.size) {
 				return false;
 			}
 			dx = 1;
 		} else if (o == Orientation.SOUTH) {
-			if (coords.getY() + ship.getLength() >= this.size) {
+			if (coords.getY() + ship.getLength() > this.size) {
 				return false;
 			}
 			dy = 1;
 		} else if (o == Orientation.NORTH) {
-			if (coords.getY() + 1 - ship.getLength() < 0) {
+			if (coords.getY() + 1 - ship.getLength() <= 0) {
 				return false;
 			}
 			dy = -1;
 		} else if (o == Orientation.WEST) {
-			if (coords.getX() + 1 - ship.getLength() < 0) {
+			if (coords.getX() + 1 - ship.getLength() <= 0) {
 				return false;
 			}
 			dx = -1;
@@ -227,4 +232,6 @@ public class Board implements IBoard {
 
 		return true;
 	}
+
+
 }
