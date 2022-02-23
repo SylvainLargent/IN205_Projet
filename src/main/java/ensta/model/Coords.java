@@ -50,4 +50,10 @@ public class Coords {
         return (new Coords(rand.nextInt(sizeBoard),rand.nextInt(sizeBoard)));
     }
 
+    public String toString(){
+        char xCoord = 'A';
+        for(int i= 0; i < this.x; ++i)
+            xCoord++;
+        return "(" + xCoord + (this.y+1) + ")"; 
+    }
 }

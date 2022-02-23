@@ -61,13 +61,15 @@ public class BattleShipsAI implements Serializable {
 	 */
 	public void putShips(AbstractShip ships[]) {
 		Coords coords = Coords.randomCoords(this.board.getSize());
-		Orientation orientation;
-		Orientation[] orientations = Orientation.values();
+		//Je n'ai pas vu l'utilité de ces deux lignes
+		//Orientation orientation;
+		//Orientation[] orientations = Orientation.values();
 
 		for (AbstractShip ship : ships) {
 			do {
-				// TODO use Random to pick a random x, y & 
+				// TODO use Random to pick a random x, y & orientation
 				coords = Coords.randomCoords(this.board.getSize());
+				ship.setOrientation(Orientation.randomOrientation());
 			} while (!board.canPutShip(ship, coords));
 			board.putShip(ship, coords);
 		}

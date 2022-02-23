@@ -147,7 +147,7 @@ public class Board implements IBoard {
 	public boolean hasShip(Coords coords){
 		//On vérifie qu'il n'y a pas déjà un navire sur le board à ces coordonnées
 		if(this.ships[coords.getY()][coords.getX()].getShip() != null)
-			return true;
+			return true; // Il renvoie qu'il y a un bateau malgré le fait qu'il est coulé
 		else
 			return false;
 	}	

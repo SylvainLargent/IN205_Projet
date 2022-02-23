@@ -33,7 +33,12 @@ public class TestBoard {
         board.putShip(ship4, coords4);
 
         board.sendHit(coords2);
+        System.out.println(coords2);
+        board.print();
+
         board.sendHit(coordsHit);
+        System.out.println(coordsHit);
+        board.print();
 
         System.out.println(board.sendHit(coordsSunk) + " coulé");
         board.print();
