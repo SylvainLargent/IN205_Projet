@@ -45,9 +45,9 @@ public class Coords {
         return (this.x < size && this.y < size);
     }
 
-    public static Coords randomCoords(int random){
-        Coords coords = new Coords(1,2);
-        return coords;
+    public static Coords randomCoords(int sizeBoard){
+        Random rand = new Random();
+        return (new Coords(rand.nextInt(sizeBoard),rand.nextInt(sizeBoard)));
     }
 
 }

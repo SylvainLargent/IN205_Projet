@@ -1,5 +1,7 @@
 package ensta.model.ship;
 
+import ensta.util.ColorUtil;
+
 public class ShipState {
     AbstractShip ship;
     boolean struck;
@@ -29,8 +31,10 @@ public class ShipState {
     public String toString(){
         if(this.ship == null)
             return ".";
-        else
+        else if(this.struck == false)
             return this.ship.getLabel().toString(); //Label is a Character
+        else
+            return ColorUtil.colorize(this.ship.getLabel().toString(), ColorUtil.Color.RED);
     }
 
     public boolean isSunk(){
