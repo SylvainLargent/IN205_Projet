@@ -33,6 +33,8 @@ public class TestBoard {
 
         board.setHit(true, coordsHit);
 
+        
+
 
         board.print();
         System.out.println(board.getHit(coordsHit));        

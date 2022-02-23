@@ -30,7 +30,7 @@ public interface IBoard {
      * @param hit true if the hit must be set to successful
      * @param coords
      */
-    public void setHit(boolean hit, Coords coords);
+    public void setHit(Boolean hit, Coords coords);
 
     /**
      * Get the state of a hit at the given position

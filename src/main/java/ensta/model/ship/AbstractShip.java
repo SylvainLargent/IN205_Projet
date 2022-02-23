@@ -7,7 +7,8 @@ public abstract class AbstractShip {
     private Coords coords;
     private int length;  //Taille du ship
     private String name; //Nom du navire
-    private char label;  //Représentation des navires sur la grille, exemples : S,D,B,C
+    private Character label;  //Représentation des navires sur la grille, exemples : S,D,B,C
+    private int strikeCount; //Il faudra penser à le valuer dans les constructeurs, a priori à 0, ET à l'encapsulation
 
     //Constructeurs faits au préalable
     public AbstractShip(Orientation orientation_arg, Coords coords_arg, int length_arg, String name_arg){
@@ -15,21 +16,31 @@ public abstract class AbstractShip {
         this.coords = coords_arg;
         this.length = length_arg;
         this.name = name_arg;
+        this.strikeCount = 0;
     }
 
     public AbstractShip(int length_arg, String name_arg){
         this.length = length_arg;
         this.name = name_arg;
+        this.strikeCount = 0;
     }
 
     //Constructeur demandé à la question 2 !
-    public AbstractShip(String name_arg, char label_arg, int length_arg, Orientation orientation_arg){
+    public AbstractShip(String name_arg, Character label_arg, int length_arg, Orientation orientation_arg){
         this.length = length_arg;
         this.name = name_arg;
         this.orientation = orientation_arg;
         this.label = label_arg;
     }
 
+    //Exercice 5 !
+    public void addStrike(){
+        this.strikeCount ++;
+    }
+
+    public boolean isSunk(){
+        return (this.strikeCount == this.length);
+    }
 
     //ENCAPSULATION
     public void changeOrientation(Orientation orientation_arg){ //Mutateur de l'orientation
@@ -37,28 +48,27 @@ public abstract class AbstractShip {
     }
 
     public String getName(){
-        return name;
+        return this.name;
     }
     
     public Orientation getOrientation(){
-        return orientation;
+        return this.orientation;
     }
 
     public int getLength(){
-        return length;
+        return this.length;
     }
 
-    public char getLabel(){
-        return label;
+    public Character getLabel(){
+        return this.label;
     }
     
     public Coords getCoords(){
-        return coords;
+        return this.coords;
     }
 
-
-    public boolean isSunk(){
-        return false;
+    public int getStrikeCount(){
+        return this.strikeCount;
     }
 
     //Implémentons un setter pour l'orientation !
