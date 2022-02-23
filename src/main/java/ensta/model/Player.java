@@ -44,11 +44,29 @@ public class Player {
 			System.out.println(msg);
 			InputHelper.ShipInput res = InputHelper.readShipInput();
 			// TODO set ship orientation
-			// TODO put ship at given position
-			// TODO when ship placement successful
-			++i;
-			done = i == 5;
+			if(res.orientation.equals("east"))
+				ship.setOrientation(Orientation.EAST);
+			if(res.orientation.equals("west"))
+				ship.setOrientation(Orientation.WEST);
+			if(res.orientation.equals("south"))
+				ship.setOrientation(Orientation.SOUTH);
+			if(res.orientation.equals("north"))
+				ship.setOrientation(Orientation.NORTH);
+			//Récupérons les coordonnées du bateau
+			Coords coords = new Coords(res.y,res.x);
 
+			// TODO put ship at given position
+			//Cas où, il n'est pas possible de placer un navire à ces coordonnées
+			if(this.board.putShip(ship,coords) == false){
+				System.out.println("You're superposing ships, or your ship is out of bound");
+				System.out.println("Please place correctly your ship");
+				done = (i == 5);
+			}
+			// TODO when ship placement successful
+			else{
+				++i;
+				done = (i == 5);
+			}
 			board.print();
 		} while (!done);
 	}

@@ -60,4 +60,11 @@ public abstract class AbstractShip {
     public boolean isSunk(){
         return false;
     }
+
+    //Implémentons un setter pour l'orientation !
+    public void setOrientation(Orientation o){
+        this.orientation = o;
+    }
+
+
 }
