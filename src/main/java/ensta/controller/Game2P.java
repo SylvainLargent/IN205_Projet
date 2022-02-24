@@ -19,7 +19,7 @@ import ensta.model.ship.Destroyer;
 import ensta.model.ship.Submarine;
 import ensta.util.ColorUtil;
 
-public class Game {
+public class Game2P {
 
 	/*
 	 * *** Constante
@@ -36,10 +36,10 @@ public class Game {
 	/*
 	 * *** Constructeurs
 	 */
-	public Game() {
+	public Game2P() {
 	}
 
-	public Game init() {
+	public Game2P init() {
 		if (!loadSave()) {
 			//Attention il faut une liste de taille 5, car putShips s'arrête après la mise en place de 5 bateaux
 			//Il faut deux listes différentes pour que les bateaux ne partagent pas le même compteur de bateaux détruits
@@ -47,14 +47,24 @@ public class Game {
 			List<AbstractShip> ships2 = createDefaultShips();
 
 			// TODO init boards
-			Board board1 = new Board("Joueur Humain");
-			Board board2 = new Board("Joueur AI");
+			Board board1 = new Board("Sylvain");
+			Board board2 = new Board("Gabriel");
 			// TODO init this.player1 & this.player2
 			this.player1 = new Player(board1, board2, ships1);
-			this.player2 = new PlayerAI(board2, board1, ships2);
+			this.player2 = new Player(board2, board1, ships2);
 			// TODO place player ships
 			this.player1.putShips();
+
+            board2.print();
+
+            System.out.println("Press enter so the next player can put his ships on the board");
+            try{System.in.read();}
+                    catch(Exception e){}
 			this.player2.putShips();
+            
+            System.out.println("Press enter so the player 1 can play");
+            try{System.in.read();}
+                catch(Exception e){}
 		}
 		return this;
 	}
@@ -65,35 +75,56 @@ public class Game {
 	public void run() {
 		Coords coords = new Coords();
 		Board b1 = player1.getBoard();
+        Board b2 = player2.getBoard();
+
+		Board empty_board = new Board("Empty", b1.getSize()); //Permet de cacher les deux écrans, d'un joueur par rapport à l'autre
 		Hit hit;
 
 		// main loop
-		//Affichage Nom du joueur et son board
-		System.out.println(player1.getBoard().getName());
-		b1.print();
+		
 		boolean done;
-		do {
-			hit = player1.sendHit(coords); // TODO player1 send a hit
 
+		do {
+            //Affichage Nom du joueur et son board
+		    System.out.println(player1.getBoard().getName());
+            b1.print();
+			hit = player1.sendHit(coords); // TODO player1 send a hit
 			boolean strike = (hit != Hit.MISS); // TODO set this hit on his board (b1)
 			b1.setHit(strike, coords);
 			done = updateScore();
 			b1.print();
 			System.out.println(makeHitMessage(false /* outgoing hit */, coords, hit));
 
+            if(!done && !strike){
+                empty_board.print(); //Permet de cacher les deux écrans, d'un joueur par rapport à l'autre
+                System.out.println("Press enter so the player 2 can play");
+                try{System.in.read();}
+                    catch(Exception e){}
+            }
+
 			// save();
 
 			if (!done && !strike) {
 				do {
+                    //Affichage Nom du joueur et son board
+		            System.out.println(player2.getBoard().getName());
+                    System.out.println(makeHitMessage(true /* incoming hit*/, coords, hit));
+                    b2.print();
 					hit = player2.sendHit(coords); // TODO player2 send a hit.
-
-					strike = hit != Hit.MISS;
-
-					if (strike) {
-						b1.print();
-					}
-					System.out.println(makeHitMessage(true /* incoming hit */, coords, hit));
+					strike = (hit != Hit.MISS);
+					b2.setHit(strike, coords);
+                    System.out.println(makeHitMessage(false /* outgoing hit */, coords, hit));
 					done = updateScore();
+
+		
+                    if(!done && !strike){
+                        empty_board.print(); //Permet de cacher les deux écrans, d'un joueur par rapport à l'autre
+                        System.out.println("Press enter so the player 1 can play");
+                        try{System.in.read();}
+                            catch(Exception e){}
+                        System.out.println(makeHitMessage(true /*incoming hit*/, coords, hit));
+                    }
+                    
 
 					if (!done) {
 //						save();
@@ -104,7 +135,7 @@ public class Game {
 		} while (!done);
 
 		SAVE_FILE.delete();
-		System.out.println(String.format("%s gagne", player1.isLose() ? player2.getBoard().getName() : player1.getBoard().getName()));
+		System.out.println(String.format("%s a gagné !", player1.isLose() ? player2.getBoard().getName() : player1.getBoard().getName()));
 		sin.close();
 	}
 
