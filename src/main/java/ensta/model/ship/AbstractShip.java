@@ -31,6 +31,7 @@ public abstract class AbstractShip {
         this.name = name_arg;
         this.orientation = orientation_arg;
         this.label = label_arg;
+        this.strikeCount = 0;
     }
 
     //Exercice 5 !

@@ -42,7 +42,7 @@ public class Coords {
     }
 
     public boolean isInBoard(int size){
-        return (this.x < size && this.y < size);
+        return (this.x < size && this.y < size && this.x >= 0 && this.y >=0);
     }
 
     public static Coords randomCoords(int sizeBoard){

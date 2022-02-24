@@ -24,6 +24,7 @@ public class Player {
 		this.setBoard(board);
 		this.ships = ships.toArray(new AbstractShip[0]);
 		this.opponentBoard = opponentBoard;
+		this.destroyedCount = 0;
 	}
 
 	/*
@@ -85,13 +86,16 @@ public class Player {
 			hit = this.opponentBoard.sendHit(temp);
 			// TODO : Game expects sendHit to return BOTH hit result & hit coords.
 			done = (hit != null);
-			if(hit == null){
+			if(this.board.getHit(temp) != null){
 				System.out.println("Frappe déjà réalisé, entrez de nouvelles coordonnées !");
+				done = false;
 			}
 			// return hit is obvious. But how to return coords at the same time ?
 			// Réponse : On modifie les coords prises en argument
 		} while (!done);
-		coords = temp;
+		coords.setX(temp.getX());
+		coords.setY(temp.getY());
+
 		return hit;
 	}
 

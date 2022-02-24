@@ -41,18 +41,16 @@ public class Game {
 
 	public Game init() {
 		if (!loadSave()) {
-			
-			List<AbstractShip> ships = new ArrayList<AbstractShip>();
-			ships.add(new Destroyer());
-			ships.add(new BattleShip());
-			ships.add(new Submarine());
-			ships.add(new Carrier());
+			//Attention il faut une liste de taille 5, car putShips s'arrête après la mise en place de 5 bateaux
+			List<AbstractShip> ships1 = createDefaultShips();
+			List<AbstractShip> ships2 = createDefaultShips();
+
 			// TODO init boards
 			Board board1 = new Board("Joueur Humain");
 			Board board2 = new Board("Joueur AI");
 			// TODO init this.player1 & this.player2
-			this.player1 = new Player(board1, board2, ships);
-			this.player2 = new PlayerAI(board2, board1, ships);
+			this.player1 = new PlayerAI(board1, board2, ships1);
+			this.player2 = new PlayerAI(board2, board1, ships2);
 			// TODO place player ships
 			this.player1.putShips();
 			this.player2.putShips();
@@ -78,7 +76,6 @@ public class Game {
 
 			boolean strike = (hit != Hit.MISS); // TODO set this hit on his board (b1)
 			b1.setHit(strike, coords);
-
 			done = updateScore();
 			b1.print();
 			System.out.println(makeHitMessage(false /* outgoing hit */, coords, hit));
@@ -106,7 +103,7 @@ public class Game {
 		} while (!done);
 
 		SAVE_FILE.delete();
-		System.out.println(String.format("joueur %d gagne", player1.isLose() ? 2 : 1));
+		System.out.println(String.format("%s gagne", player1.isLose() ? player2.getBoard().getName() : player1.getBoard().getName()));
 		sin.close();
 	}
 
@@ -171,7 +168,7 @@ public class Game {
 			color = ColorUtil.Color.RED;
 		}
 		msg = String.format("%s Frappe en %c%d : %s", incoming ? "<=" : "=>", ((char) ('A' + coords.getX())),
-				(coords.getY() + 1), msg);
+				(coords.getY()+1), msg);
 		return ColorUtil.colorize(msg, color);
 	}
 

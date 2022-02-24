@@ -176,7 +176,7 @@ public class Board implements IBoard {
 			if(this.ships[res.getY()][res.getX()].isStruck())
 				return null;
 			else{
-				this.hits[res.getY()][res.getX()] = true;
+				//this.hits[res.getY()][res.getX()] = true; //Pas utile dans le cas où il y a deux boards
 				this.ships[res.getY()][res.getX()].addStrike();
 				if(this.ships[res.getY()][res.getX()].isSunk())
 					return Hit.fromInt(ships[res.getY()][res.getX()].getShip().getLength());
@@ -184,7 +184,7 @@ public class Board implements IBoard {
 					return Hit.STRIKE;
 			}
 		}
-		this.hits[res.getY()][res.getX()] = false;
+		//this.hits[res.getY()][res.getX()] = false; //Pas utile dans le cas où il y a deux boards
 		return Hit.MISS;
 	}
 
