@@ -52,10 +52,10 @@ public class Game implements Serializable {
 			List<AbstractShip> ships2 = createDefaultShips();
 
 			// TODO init boards
-			Board board1 = new Board("Joueur AI1");
+			Board board1 = new Board("Joueur Humain");
 			Board board2 = new Board("Joueur AI2");
 			// TODO init this.player1 & this.player2
-			this.player1 = new PlayerAI(board1, board2, ships1);
+			this.player1 = new Player(board1, board2, ships1);
 			this.player2 = new PlayerAI(board2, board1, ships2);
 			// TODO place player ships
 			this.player1.putShips();
@@ -121,9 +121,12 @@ public class Game implements Serializable {
 			 }
 
 			// TODO bonus 2 : serialize players
-			ObjectOutputStream oos =  new ObjectOutputStream(new FileOutputStream(SAVE_FILE));
-			oos.writeObject(this.player1) ;
-			oos.writeObject(this.player2) ;
+			java.io.ObjectOutputStream oos =  new ObjectOutputStream(new FileOutputStream(SAVE_FILE));
+			 Player [] players = {this.player1, this.player2};
+			oos.writeObject(players) ;
+			if(oos != null){
+				oos.close();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -132,12 +135,17 @@ public class Game implements Serializable {
 	private boolean loadSave() {
 		if (SAVE_FILE.exists()) {
 			try {
+				Player[] players = new Player[2];
 				 //TODO bonus 2 : deserialize players
 				 ObjectInputStream ois =  new ObjectInputStream(new FileInputStream(SAVE_FILE));
-				 this.player1 = (Player)ois.readObject();
-				 this.player2 = (Player)ois.readObject();
-				 System.out.println(player1) ;
-				 System.out.println(player2) ;
+
+				 players = (Player[])ois.readObject();
+
+				 this.player1 = players[0];
+				 this.player2 = players[1];
+				 
+				 if(ois != null)
+				 	ois.close();
 				return true;
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
