@@ -33,7 +33,7 @@ public final class InputHelper {
 	/*
 	 * ** Méthodes de la classe InputHelper
 	 */
-	public static ShipInput readShipInput() {
+	public static ShipInput readShipInput(int sizeBoard) {
 		ShipInput res = new ShipInput();
 		String[] validOrientations = { "north", "south", "east", "west" }; // North, South, East, West
 		boolean done = false;
@@ -50,15 +50,15 @@ public final class InputHelper {
 					}
 				}
 			} catch (Exception e) {}
-			if (!done) {
-				System.err.println("Format incorrect! Entrez la position sous forme 'A1 north'");
+			if (!done | res.y >= sizeBoard | res.x >= sizeBoard | res.y < 0  ) {
+				System.err.println("Format incorrect! Entrez la position sous forme 'A1 north', où dans les limites du board");
 			}
 		} while (!done && scanner.hasNextLine());
 
 		return res;
 	}
 
-	public static CoordInput readCoordInput() {
+	public static CoordInput readCoordInput(int sizeBoard) {
 		CoordInput res = new CoordInput();
 		boolean done = false;
 		do {
@@ -70,6 +70,11 @@ public final class InputHelper {
 			} catch (Exception e) {
 				System.err.println("Format incorrect! Entrez la position sous forme 'A1'");
 			}
+			if (!done | res.y >= sizeBoard | res.x >= sizeBoard | res.y < 0  ) {
+				System.err.println("Format incorrect! Entrez la position sous forme 'A1 north', où dans les limites du board");
+				done = false;
+			}
+
 		} while (!done && scanner.hasNextLine());
 
 		return res;
