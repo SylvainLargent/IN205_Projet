@@ -8,7 +8,7 @@ import ensta.model.*;
 public class Main {
 
 	public static void main(String args[]) {
-        new Game2P().init().run();
+        new Game().init().run();
     }
 
 }

@@ -1,7 +1,12 @@
 package ensta.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +24,7 @@ import ensta.model.ship.Destroyer;
 import ensta.model.ship.Submarine;
 import ensta.util.ColorUtil;
 
-public class Game {
+public class Game implements Serializable {
 
 	/*
 	 * *** Constante
@@ -47,10 +52,10 @@ public class Game {
 			List<AbstractShip> ships2 = createDefaultShips();
 
 			// TODO init boards
-			Board board1 = new Board("Joueur Humain");
-			Board board2 = new Board("Joueur AI");
+			Board board1 = new Board("Joueur AI1");
+			Board board2 = new Board("Joueur AI2");
 			// TODO init this.player1 & this.player2
-			this.player1 = new Player(board1, board2, ships1);
+			this.player1 = new PlayerAI(board1, board2, ships1);
 			this.player2 = new PlayerAI(board2, board1, ships2);
 			// TODO place player ships
 			this.player1.putShips();
@@ -81,7 +86,7 @@ public class Game {
 			b1.print();
 			System.out.println(makeHitMessage(false /* outgoing hit */, coords, hit));
 
-			// save();
+			save();
 
 			if (!done && !strike) {
 				do {
@@ -96,7 +101,7 @@ public class Game {
 					done = updateScore();
 
 					if (!done) {
-//						save();
+						save();
 					}
 				} while (strike && !done);
 			}
@@ -105,33 +110,39 @@ public class Game {
 
 		SAVE_FILE.delete();
 		System.out.println(String.format("%s gagne", player1.isLose() ? player2.getBoard().getName() : player1.getBoard().getName()));
-		sin.close();
+		
 	}
 
 	private void save() {
-//		try {
-//			// TODO bonus 2 : uncomment
-//			// if (!SAVE_FILE.exists()) {
-//			// SAVE_FILE.getAbsoluteFile().getParentFile().mkdirs();
-//			// }
-//
-//			// TODO bonus 2 : serialize players
-//
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		try {
+			 //TODO bonus 2 : uncomment
+			 if (!SAVE_FILE.exists()) {
+			 	SAVE_FILE.getAbsoluteFile().getParentFile().mkdirs();
+			 }
+
+			// TODO bonus 2 : serialize players
+			ObjectOutputStream oos =  new ObjectOutputStream(new FileOutputStream(SAVE_FILE));
+			oos.writeObject(this.player1) ;
+			oos.writeObject(this.player2) ;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private boolean loadSave() {
-//		if (SAVE_FILE.exists()) {
-//			try {
-//				// TODO bonus 2 : deserialize players
-//
-//				return true;
-//			} catch (IOException | ClassNotFoundException e) {
-//				e.printStackTrace();
-//			}
-//		}
+		if (SAVE_FILE.exists()) {
+			try {
+				 //TODO bonus 2 : deserialize players
+				 ObjectInputStream ois =  new ObjectInputStream(new FileInputStream(SAVE_FILE));
+				 this.player1 = (Player)ois.readObject();
+				 this.player2 = (Player)ois.readObject();
+				 System.out.println(player1) ;
+				 System.out.println(player2) ;
+				return true;
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
 		return false;
 	}
 
