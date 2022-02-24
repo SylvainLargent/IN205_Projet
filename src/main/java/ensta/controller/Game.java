@@ -47,10 +47,10 @@ public class Game {
 			List<AbstractShip> ships2 = createDefaultShips();
 
 			// TODO init boards
-			Board board1 = new Board("Joueur Humain");
-			Board board2 = new Board("Joueur AI");
+			Board board1 = new Board("Joueur Humain",24);
+			Board board2 = new Board("Joueur AI",24);
 			// TODO init this.player1 & this.player2
-			this.player1 = new Player(board1, board2, ships1);
+			this.player1 = new PlayerAI(board1, board2, ships1);
 			this.player2 = new PlayerAI(board2, board1, ships2);
 			// TODO place player ships
 			this.player1.putShips();
