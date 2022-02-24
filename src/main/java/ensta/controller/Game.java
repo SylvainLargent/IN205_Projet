@@ -42,6 +42,7 @@ public class Game {
 	public Game init() {
 		if (!loadSave()) {
 			//Attention il faut une liste de taille 5, car putShips s'arrête après la mise en place de 5 bateaux
+			//Il faut deux listes différentes pour que les bateaux ne partagent pas le même compteur de bateaux détruits
 			List<AbstractShip> ships1 = createDefaultShips();
 			List<AbstractShip> ships2 = createDefaultShips();
 
@@ -49,7 +50,7 @@ public class Game {
 			Board board1 = new Board("Joueur Humain");
 			Board board2 = new Board("Joueur AI");
 			// TODO init this.player1 & this.player2
-			this.player1 = new PlayerAI(board1, board2, ships1);
+			this.player1 = new Player(board1, board2, ships1);
 			this.player2 = new PlayerAI(board2, board1, ships2);
 			// TODO place player ships
 			this.player1.putShips();
