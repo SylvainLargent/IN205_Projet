@@ -1,4 +1,5 @@
 # IN205_Projet
+Toutes les questions ont été faites, y compris les bonus.
 Création du .jar dans le dossier target.
 Pour exécuter le .jar, il sufiit de faire java -jar nom_du_fichier.jar
 
