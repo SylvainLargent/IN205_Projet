@@ -1,5 +1,6 @@
 # IN205_Projet
 Création du .jar dans le dossier target.
+Pour exécuter le .jar, il sufiit de faire java -jar nom_du_fichier.jar
 
 4 modes jeux explicites au moment du lancement de l'exécutable.
 
@@ -7,6 +8,7 @@ Le programme est par défaut, avec une grille de taille 10, mais l'affichage s'a
 dans la fonction init des fichiers sources Game.java et Game2P.java).
 Il y a eu une correction de l'IA qui ne se détectait jamais les orientations verticales des bateaux.
 
+Dans la suite, nous expliquons globalement comment jouer au jeu.
 
 Etape Placement de bateaux :
 
