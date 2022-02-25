@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>ensta</groupId>
-  <artifactId>bataille-navale</artifactId>
+  <artifactId>bataille-navale-LARGENT-Sylvain</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <name>bataille-navale</name>
@@ -66,6 +66,15 @@
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.0.2</version>
+          <configuration>
+            <archive>
+              <manifest>
+                <addClasspath>true</addClasspath>
+                <classpathPrefix>lib</classpathPrefix>
+                <mainClass>ensta.Main</mainClass>
+              </manifest>
+            </archive>
+          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-install-plugin</artifactId>

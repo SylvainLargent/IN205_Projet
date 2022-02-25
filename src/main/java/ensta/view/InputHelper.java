@@ -52,6 +52,7 @@ public final class InputHelper {
 			} catch (Exception e) {}
 			if (!done | res.y >= sizeBoard | res.x >= sizeBoard | res.y < 0  ) {
 				System.err.println("Format incorrect! Entrez la position sous forme 'A1 north', où dans les limites du board");
+				done = false;
 			}
 		} while (!done && scanner.hasNextLine());
 

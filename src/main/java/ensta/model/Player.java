@@ -43,7 +43,7 @@ public class Player implements Serializable{
 			AbstractShip ship = ships[i];
 			String msg = String.format("placer %d : %s(%d)", i + 1, ship.getName(), ship.getLength());
 			System.out.println(msg);
-			InputHelper.ShipInput res = InputHelper.readShipInput();
+			InputHelper.ShipInput res = InputHelper.readShipInput(this.board.getSize());
 			// TODO set ship orientation
 			if(res.orientation.equals("east"))
 				ship.setOrientation(Orientation.EAST);
@@ -79,7 +79,7 @@ public class Player implements Serializable{
 
 		do {
 			System.out.println("où frapper?");
-			InputHelper.CoordInput hitInput = InputHelper.readCoordInput();
+			InputHelper.CoordInput hitInput = InputHelper.readCoordInput(this.board.getSize());
 			// TODO call sendHit on this.opponentBoard
 			temp.setX(hitInput.x);
 			temp.setY(hitInput.y);
