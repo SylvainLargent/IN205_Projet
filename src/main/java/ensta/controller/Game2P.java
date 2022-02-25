@@ -1,7 +1,11 @@
 package ensta.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,30 +43,37 @@ public class Game2P {
 	public Game2P() {
 	}
 
-	public Game2P init() {
-		if (!loadSave()) {
+	public Game2P init(boolean Reprendre) {
+		if (!loadSave(Reprendre)) {
 			//Attention il faut une liste de taille 5, car putShips s'arrête après la mise en place de 5 bateaux
 			//Il faut deux listes différentes pour que les bateaux ne partagent pas le même compteur de bateaux détruits
 			List<AbstractShip> ships1 = createDefaultShips();
 			List<AbstractShip> ships2 = createDefaultShips();
 
 			// TODO init boards
-			Board board1 = new Board("Sylvain");
-			Board board2 = new Board("Gabriel");
+			Board board1 = new Board("Joueur 1");
+			Board board2 = new Board("Joueur 2");
 			// TODO init this.player1 & this.player2
 			this.player1 = new Player(board1, board2, ships1);
 			this.player2 = new Player(board2, board1, ships2);
+
+			//Affichage du board pour le placement des bateaux de la grille
+			board1.print();
+
 			// TODO place player ships
 			this.player1.putShips();
 
             board2.print();
 
-            System.out.println("Press enter so the next player can put his ships on the board");
+			System.out.println("Appuyez sur Enter pour que l'autre joueur puisse placer ses bateaux");
             try{System.in.read();}
                     catch(Exception e){}
 			this.player2.putShips();
             
-            System.out.println("Press enter so the player 1 can play");
+			Board empty_board = new Board("Vide", board1.getSize()); //Permet de cacher les deux écrans, d'un joueur par rapport à l'autre
+
+			empty_board.print(); //Permet de cacher les deux écrans, d'un joueur par rapport à l'autre
+			System.out.println("Appuyez sur Enter pour que le joueur 1 puisse jouer");
             try{System.in.read();}
                 catch(Exception e){}
 		}
@@ -77,7 +88,7 @@ public class Game2P {
 		Board b1 = player1.getBoard();
         Board b2 = player2.getBoard();
 
-		Board empty_board = new Board("Empty", b1.getSize()); //Permet de cacher les deux écrans, d'un joueur par rapport à l'autre
+		Board empty_board = new Board("Vide", b1.getSize()); //Permet de cacher les deux écrans, d'un joueur par rapport à l'autre
 		Hit hit;
 
 		// main loop
@@ -97,12 +108,12 @@ public class Game2P {
 
             if(!done && !strike){
                 empty_board.print(); //Permet de cacher les deux écrans, d'un joueur par rapport à l'autre
-                System.out.println("Press enter so the player 2 can play");
+				System.out.println("Appuyez sur Enter pour que le joueur 2 puisse jouer");
                 try{System.in.read();}
                     catch(Exception e){}
             }
 
-			// save();
+			save();
 
 			if (!done && !strike) {
 				do {
@@ -119,7 +130,7 @@ public class Game2P {
 		
                     if(!done && !strike){
                         empty_board.print(); //Permet de cacher les deux écrans, d'un joueur par rapport à l'autre
-                        System.out.println("Press enter so the player 1 can play");
+                        System.out.println("Appuyez sur Enter pour que le joueur 1 puisse jouer");
                         try{System.in.read();}
                             catch(Exception e){}
                         System.out.println(makeHitMessage(true /*incoming hit*/, coords, hit));
@@ -127,7 +138,7 @@ public class Game2P {
                     
 
 					if (!done) {
-//						save();
+						save();
 					}
 				} while (strike && !done);
 			}
@@ -140,29 +151,43 @@ public class Game2P {
 	}
 
 	private void save() {
-//		try {
-//			// TODO bonus 2 : uncomment
-//			// if (!SAVE_FILE.exists()) {
-//			// SAVE_FILE.getAbsoluteFile().getParentFile().mkdirs();
-//			// }
-//
-//			// TODO bonus 2 : serialize players
-//
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		try {
+			 //TODO bonus 2 : uncomment
+			 if (!SAVE_FILE.exists()) {
+			 	SAVE_FILE.getAbsoluteFile().getParentFile().mkdirs();
+			 }
+
+			// TODO bonus 2 : serialize players
+			java.io.ObjectOutputStream oos =  new ObjectOutputStream(new FileOutputStream(SAVE_FILE));
+			Player [] players = {this.player1, this.player2};
+			oos.writeObject(players) ;
+			if(oos != null){
+				oos.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	private boolean loadSave() {
-//		if (SAVE_FILE.exists()) {
-//			try {
-//				// TODO bonus 2 : deserialize players
-//
-//				return true;
-//			} catch (IOException | ClassNotFoundException e) {
-//				e.printStackTrace();
-//			}
-//		}
+	private boolean loadSave(boolean Reprendre) {
+		if (SAVE_FILE.exists() && Reprendre) {
+			try {
+				Player[] players = new Player[2];
+				 //TODO bonus 2 : deserialize players
+				 ObjectInputStream ois =  new ObjectInputStream(new FileInputStream(SAVE_FILE));
+
+				 players = (Player[])ois.readObject();
+
+				 this.player1 = players[0];
+				 this.player2 = players[1];
+				 
+				 if(ois != null)
+				 	ois.close();
+				return true;
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
 		return false;
 	}
 

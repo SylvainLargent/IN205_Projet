@@ -41,7 +41,7 @@ public class Player implements Serializable{
 
 		do {
 			AbstractShip ship = ships[i];
-			String msg = String.format("placer %d : %s(%d)", i + 1, ship.getName(), ship.getLength());
+			String msg = String.format("Placer %d : %s(%d)", i + 1, ship.getName(), ship.getLength());
 			System.out.println(msg);
 			InputHelper.ShipInput res = InputHelper.readShipInput(this.board.getSize());
 			// TODO set ship orientation
@@ -78,7 +78,7 @@ public class Player implements Serializable{
 		Coords temp = new Coords(0,0);
 
 		do {
-			System.out.println("où frapper?");
+			System.out.println("Où voulez-vous frapper ?");
 			InputHelper.CoordInput hitInput = InputHelper.readCoordInput(this.board.getSize());
 			// TODO call sendHit on this.opponentBoard
 			temp.setX(hitInput.x);
@@ -87,7 +87,7 @@ public class Player implements Serializable{
 			// TODO : Game expects sendHit to return BOTH hit result & hit coords.
 			done = (hit != null);
 			if(this.board.getHit(temp) != null){
-				System.out.println("Frappe déjà réalisé, entrez de nouvelles coordonnées !");
+				System.out.println("Cette frappe a déjà été réalisée, entrez de nouvelles coordonées!");
 				done = false;
 			}
 			// return hit is obvious. But how to return coords at the same time ?

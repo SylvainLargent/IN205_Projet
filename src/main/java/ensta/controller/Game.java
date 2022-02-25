@@ -44,8 +44,8 @@ public class Game implements Serializable {
 	public Game() {
 	}
 
-	public Game init() {
-		if (!loadSave()) {
+	public Game init(boolean Reprendre) {
+		if (!loadSave(Reprendre)) {
 			//Attention il faut une liste de taille 5, car putShips s'arrête après la mise en place de 5 bateaux
 			//Il faut deux listes différentes pour que les bateaux ne partagent pas le même compteur de bateaux détruits
 			List<AbstractShip> ships1 = createDefaultShips();
@@ -53,10 +53,12 @@ public class Game implements Serializable {
 
 			// TODO init boards
 			Board board1 = new Board("Joueur Humain");
-			Board board2 = new Board("Joueur AI2");
+			Board board2 = new Board("Joueur IA");
 			// TODO init this.player1 & this.player2
 			this.player1 = new Player(board1, board2, ships1);
 			this.player2 = new PlayerAI(board2, board1, ships2);
+			//Affichage du board pour le placement des bateaux de la grille
+			board1.print();
 			// TODO place player ships
 			this.player1.putShips();
 			this.player2.putShips();
@@ -132,8 +134,8 @@ public class Game implements Serializable {
 		}
 	}
 
-	private boolean loadSave() {
-		if (SAVE_FILE.exists()) {
+	private boolean loadSave(boolean Reprendre) {
+		if (SAVE_FILE.exists() && Reprendre) {
 			try {
 				Player[] players = new Player[2];
 				 //TODO bonus 2 : deserialize players
